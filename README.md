@@ -40,7 +40,6 @@ Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1`
 ### Code
 #### Rules Set 1
 ```
-{
 //All annotation is stored in the backup of the script to let the #chars be below 2048!
 
 on System#Boot do
@@ -90,5 +89,4 @@ on Rules#Timer=1 do
 
     timerSet,1,60
 endon
-}
 ```
