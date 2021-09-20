@@ -21,6 +21,16 @@ Connect NodeMCU with:
 •	A led that can be placed at the outside of the box to indicate that the pump is on.
 •	Use a LED display TM1637 to indicate the current in and out temperature. 2 most left are CV in. The two most right figures are CV out.
 
+### Interface
+#### Home Assistant
+
+### Testing
+Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1` 13 = D7
+
+### Information
+..
+
+
 ### Problems
 ..
 
