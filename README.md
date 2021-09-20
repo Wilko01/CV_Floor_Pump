@@ -39,7 +39,9 @@ Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1`
 
 ### Code
 #### Rules Set 1
-`//All annotation is stored in the backup of the script to let the #chars be below 2048!
+```
+{
+//All annotation is stored in the backup of the script to let the #chars be below 2048!
 
 on System#Boot do
     gpio,13,0
@@ -87,4 +89,6 @@ on Rules#Timer=1 do
     Publish,ESP05_CV_Floor/status/CV_Pump_Relay,[CV_Pump_Relay#State]
 
     timerSet,1,60
-endon`
+endon
+}
+```
