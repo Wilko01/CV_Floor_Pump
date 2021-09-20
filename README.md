@@ -42,12 +42,12 @@ Home Assistant is connected via the MQTT broker.
 Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1` 13 = D7
 
 ### Information
-[DHT11 and DHT22](https://espeasy.readthedocs.io/en/latest/Plugin/P005.html)
-[Switch Input - Switch](https://espeasy.readthedocs.io/en/latest/Plugin/P001.html)
-[Display - 7-segment display](https://espeasy.readthedocs.io/en/latest/Plugin/P073.html)
-[Rules syntax](https://espeasy.readthedocs.io/en/latest/Rules/Rules.html)
+- [DHT11 and DHT22](https://espeasy.readthedocs.io/en/latest/Plugin/P005.html)
+- [Switch Input - Switch](https://espeasy.readthedocs.io/en/latest/Plugin/P001.html)
+- [Display - 7-segment display](https://espeasy.readthedocs.io/en/latest/Plugin/P073.html)
+- [Rules syntax](https://espeasy.readthedocs.io/en/latest/Rules/Rules.html)
 
-Generic
+- Generic
 [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
 
 
