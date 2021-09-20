@@ -47,8 +47,8 @@ Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1`
 - [Display - 7-segment display](https://espeasy.readthedocs.io/en/latest/Plugin/P073.html)
 - [Rules syntax](https://espeasy.readthedocs.io/en/latest/Rules/Rules.html)
 
-- Generic
-[Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
+Generic
+- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
 
 
 ### Problems
