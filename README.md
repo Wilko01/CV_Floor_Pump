@@ -52,10 +52,9 @@ Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1`
 ..
 
 ### Code
-#### Rules Set 1
+#### Rules Set 1 without annotation
+//All annotation is stored in the next paragraph to let the #chars be below 2048. It will otherwise not fit in the ESP.
 ```
-//All annotation is stored in the backup of the script to let the #chars be below 2048!
-
 on System#Boot do
     gpio,13,0
     
@@ -103,4 +102,60 @@ on Rules#Timer=1 do
 
     timerSet,1,60
 endon
+```
+#### Rules Set 1 including annotation
+//All annotation is stored in this paragraph and is an exact copy of the previous paragraph with the addition of the annotation
+```
+//The annotation is stored here to let the #chars be below 2048! Make sure to update the above and below codes to keep them consistent
+
+on System#Boot do
+    gpio,13,0 //set pin 13 low. This is the relay of the CV pump
+    
+//store the value in variable1 to be able to be used later. 
+    Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature] 
+
+     
+    7don //turn the TM1637 on
+    7db,1 //Display the number
+    7dn,[var#1] //Display the variable
+    
+    timerSet,1,60  //set timer 1 with a cycle of 60s
+endon // close this part that started with ‘on System#Boot do ‘
+
+on Rules#Timer=1 do // when timer 1 reaches the end of the cycle do
+    If %systime% > 06:00:00        //before time …
+        If %systime% < 20:00:00    //after time …
+            Publish,ESP05_CV_Floor/status/insideOfOperationalHours,on    //push to MQTT
+            Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature] //store the value in variable1 to be able to be used later. 
+
+            if [CV_Floor_Temp_In#Temperature] > 45 //this is the temperature to high
+                gpio,13,0 //turn the relais off
+                Publish,ESP05_CV_Floor/status/TemperatureTooHigh,on
+            endif
+            
+            if [CV_Floor_Temp_In#Temperature] > 30   //when above .. then on
+                gpio,13,1
+            endif
+            
+            if [CV_Floor_Temp_In#Temperature] < 22   //when below .. then off
+            gpio,13,0
+            Publish,ESP05_CV_Floor/status/TemperatureTooHigh,off   // publis to MQTT
+            endif
+        else
+            gpio,13,0
+            Publish,ESP05_CV_Floor/status/insideOfOperationalHours,off
+        endif
+    else
+        gpio,13,0
+        Publish,ESP05_CV_Floor/status/insideOfOperationalHours,off
+  endif
+    7dn,[var#1]
+    
+    Publish,ESP05_CV_Floor/status/CV_Floor_Temp_In,[CV_Floor_Temp_In#Temperature]
+    Publish,ESP05_CV_Floor/status/CV_Floor_Temp_Out,[CV_Floor_Temp_Out#Temperature]
+    Publish,ESP05_CV_Floor/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+
+    timerSet,1,60
+endon
+
 ```
