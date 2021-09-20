@@ -38,4 +38,53 @@ Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1`
 ..
 
 ### Code
-`code`
+#### Rules Set 1
+`//All annotation is stored in the backup of the script to let the #chars be below 2048!
+
+on System#Boot do
+    gpio,13,0
+    
+    Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature] 
+
+     
+    7don
+    7db,1
+    7dn,[var#1]
+    
+    timerSet,1,60
+endon
+
+on Rules#Timer=1 do
+    If %systime% > 06:00:00
+        If %systime% < 20:00:00
+            Publish,ESP05_CV_Floor/status/insideOfOperationalHours,on
+            Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature]
+            if [CV_Floor_Temp_In#Temperature] > 45
+                gpio,13,0 //turn the relais off
+                Publish,ESP05_CV_Floor/status/TemperatureTooHigh,on
+            endif
+            
+            if [CV_Floor_Temp_In#Temperature] > 30
+                gpio,13,1
+            endif
+            
+            if [CV_Floor_Temp_In#Temperature] < 22
+            gpio,13,0
+            Publish,ESP05_CV_Floor/status/TemperatureTooHigh,off
+            endif
+        else
+            gpio,13,0
+            Publish,ESP05_CV_Floor/status/insideOfOperationalHours,off
+        endif
+    else
+        gpio,13,0
+        Publish,ESP05_CV_Floor/status/insideOfOperationalHours,off
+  endif
+    7dn,[var#1]
+    
+    Publish,ESP05_CV_Floor/status/CV_Floor_Temp_In,[CV_Floor_Temp_In#Temperature]
+    Publish,ESP05_CV_Floor/status/CV_Floor_Temp_Out,[CV_Floor_Temp_Out#Temperature]
+    Publish,ESP05_CV_Floor/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+
+    timerSet,1,60
+endon`
