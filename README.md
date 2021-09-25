@@ -9,7 +9,28 @@ Op het moment dat de temperatuur boven de maximale temperatuur uitkomt, dan word
 De ESP CV pomp module is het hart voor het aan en afschakelen van de vloerverwarmingspomp. De temperatuur en dat de invoertemperatuur te heet was worden middels MQTT tussen de ESP CV pomp en Home Assistant uitgewisseld. Zonder MQTT of Home Assistant kan de ESP CV pomp zijn werk doen. The only thing that Home Assistant is needed for is the regularly running of the pump to ensure that it will not get stuck when it is not running for a long period. The code to run the pump regularly is stored in NodeRed
 
 ### Parts
-..
+1 x NodeMCU
+![NodeMCU](Images/DHT11.jpg)
+
+2 x DHT11
+![DHT11](Images/DHT11.jpg)
+
+1 x TM1637
+![TM1637](Images/DHT11.jpg)
+
+1 x BC547B
+![BC547B](Images/BC547B.jpg)
+
+1 x Relay
+![Relay](Images/Relay.jpg)
+
+1 x Capacitor 1uF
+1 x Green Led
+1 x 1k Resistor
+2 x 30k Resistor
+2 x 3 PCB screw connector
+
+
 
 ### Schematic overview
 ![Schematic overview](Images/Schematic_overview.jpg)
