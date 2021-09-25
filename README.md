@@ -10,7 +10,7 @@ De ESP CV pomp module is het hart voor het aan en afschakelen van de vloerverwar
 
 ### Parts
 1 x NodeMCU
-![NodeMCU](Images/ESP8266_NodeMCU.jpg){width=36px}
+![NodeMCU](Images/ESP8266_NodeMCU.jpg)
 
 2 x DHT11
 ![DHT11](Images/DHT11.jpg)
@@ -42,7 +42,11 @@ Connect NodeMCU with:
 •	A led that can be placed at the outside of the box to indicate that the pump is on.
 •	Use a LED display TM1637 to indicate the current in and out temperature. 2 most left are CV in. The two most right figures are CV out.
 
-### Configuration ESPEasy
+### ESPEasy installation
+
+
+
+### ESPEasy Configuration
 ![ESPEasy Controller](Images/ESPEasy_Controller.jpg)
 
 ![ESPEasy Devices](Images/ESPEasy_Devices.jpg)
