@@ -10,13 +10,13 @@ De ESP CV pomp module is het hart voor het aan en afschakelen van de vloerverwar
 
 ### Parts
 1 x NodeMCU
-![NodeMCU](Images/DHT11.jpg)
+![NodeMCU](Images/ESP8266 NodeMCU.jpg)
 
 2 x DHT11
 ![DHT11](Images/DHT11.jpg)
 
 1 x TM1637
-![TM1637](Images/DHT11.jpg)
+![TM1637](Images/TM1637.jpg)
 
 1 x BC547B
 ![BC547B](Images/BC547B.jpg)
