@@ -2,12 +2,10 @@
 Control the CV floor pump based on the CV inlet temperature
 
 ## Description and operation instructions
-The CV floorpump 
-De vloerverwarmingspomp gaat automatisch aan en uit door de temperatuur van de CV invoerleiding te meten. De uitvoer temperatuur wordt gemeten, maar wordt niets mee gedaan. Boven een bepaalde temperatuur gaat de pomp aan en onder een bepaalde temperatuur gaat deze uit. Als de pomp draait dan is de groene led aan. Wanneer de temperatuur te hoog wordt dan wordt de pomp uitgeschakeld. Deze temperaturen zijn geprogrammeerd in de code. De 8LEDs op de ESP CV pomp module geven de temperatuur aan waarbij de 2 linker 8LEDs de invoer en de 2 rechter 8LEDs de uitvoer temperatuur weergeven. 
-Op het moment dat de temperatuur boven de maximale temperatuur uitkomt, dan wordt de pomp uitgeschakeld en in Home Assistant wordt er een virtuele schakelaar genaamd ‘Floor temp to high’ aan gezet. Wilko krijgt hier een mail van. Deze virtuele schakelaar dient met de schakelaar ‘Reset floor temp to high’ weer uitgezet te worden. Eerder zal de vloerverwarmingspomp niet draaien. 
+The CV floorpump will automatically turn on and off during a predefined timewindow by measuring the inlet temperature. The outlet temperature is measured, but there is no action connected to the outlet temperature. The CV floor pump will be turned on above a defined inlet temperature and turned off below a defined temperature. A green led is on at the moment that the pump is on. When the temperature is above a defined temperature, the pump is turned off to make sure there is no damage to the floor when the temperature would be too high. Additional there will be a trigger towards Home Assistant where NodeRed receives the signal and sends an email to Wilko and flips a virtual switch named ‘Floor temp to high’. The virtual switch needs to be reset via the  button ‘Reset floor temp to high’ on the dashboard otherwise the pump will not run. The values are hard coded into the code of the ESP CV pump module (NodeMCU). The 8LEDs at the module show the temperature. The 2 most left 8LEDs are the inlet and the 2 most right 8LEDs are the outlet temperature. At a defined time at the end of the day the pump will regularly run to ensure that it will not get stuck when it is not running for a long period. The code to run the pump regularly is hardcoded in the module.
 
-## Technical description
-De ESP CV pomp module is het hart voor het aan en afschakelen van de vloerverwarmingspomp. De temperatuur en dat de invoertemperatuur te heet was worden middels MQTT tussen de ESP CV pomp en Home Assistant uitgewisseld. Zonder MQTT of Home Assistant kan de ESP CV pomp zijn werk doen. The only thing that Home Assistant is needed for is the regularly running of the pump to ensure that it will not get stuck when it is not running for a long period. The code to run the pump regularly is stored in NodeRed
+ ## Technical description
+The ESP CV pomp module is the hart to turn the CV floor pump on and off. The temperatures of the in and outlet readings including the 'too high' will be send from the ESP to MQTT where NodeRed receives its information. In Home Assistant a virtual helper 'input_boolean.cv_floor_pump_relay' is used to indicate the state of the pump. It receives its information via NodeRed which reads MQTT and updates the value. The Module can operate without MQTT or Home Assistant.
 
 ### Parts
 1 x NodeMCU
@@ -44,7 +42,7 @@ Connect NodeMCU with:
 •	Use a LED display TM1637 to indicate the current in and out temperature. 2 most left are CV in. The two most right figures are CV out.
 
 ### ESPEasy installation
-
+See the instructions in 'Arduino projects and programming' (not listed here)
 
 
 ### ESPEasy Configuration
@@ -81,7 +79,7 @@ Generic
 ..
 
 ### Wishlist
-Let the temp become visible in HA
+..
 
 
 ### Code
