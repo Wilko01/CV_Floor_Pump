@@ -50,11 +50,11 @@ See the instructions in 'Arduino projects and programming' (not listed here)
 
 ![ESPEasy Devices](Images/ESPEasy_Devices.jpg)
 
-![ESPEasy Devices CV_FloorTempIn](Images/ESPEasy_CV_FloorTempIn.jpg)
+![ESPEasy Devices CV_FloorTempIn](Images/ESPEasy_CV_Floor_Pump_Temp_In.jpg)
 
-![ESPEasy Devices CV_FloorTempOut](Images/ESPEasy_CV_FloorTempOut.jpg)
+![ESPEasy Devices CV_FloorTempOut](Images/ESPEasy_CV_Floor_Pump_Temp_Out.jpg)
 
-![ESPEasy Devices CV_Pump_Relay](Images/ESPEasy_CV_Pump_Relay.jpg)
+![ESPEasy Devices CV_Floor_Pump_Relay](Images/ESPEasy_CV_Floor_Pump_Relay.jpg)
 
 ![ESPEasy Devices ESPEasy_Display](Images/ESPEasy_Display.jpg)
 
@@ -89,7 +89,7 @@ All annotation is stored in the next paragraph to let the #chars be below 2048. 
 on System#Boot do
     gpio,13,0
     
-    Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature] 
+    Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature] 
      
     7don 
     7db,1
@@ -102,45 +102,46 @@ on Rules#Timer=1 do
     If %systime% > 06:00:00
         If %systime% < 20:00:00
             Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,on
-            Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature]
-            if [CV_Floor_Temp_In#Temperature] > 45
+            Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature]
+            if [CV_Floor_Pump_Temp_In#Temperature] > 45
                 gpio,13,0
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
             endif          
-            if [CV_Floor_Temp_In#Temperature] > 30
+            if [CV_Floor_Pump_Temp_In#Temperature] > 30
                 gpio,13,1
             endif
-            if [CV_Floor_Temp_In#Temperature] < 22
+            if [CV_Floor_Pump_Temp_In#Temperature] < 22
             gpio,13,0
             Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off
             endif
         endif
+        Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,off
     endif
 
     7dn,[var#1]
  
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Temp_In,[CV_Floor_Temp_In#Temperature]
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Temp_Out,[CV_Floor_Temp_Out#Temperature]
-    Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_In,[CV_Floor_Pump_Temp_In#Temperature]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_Out,[CV_Floor_Pump_Temp_Out#Temperature]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 
     timerSet,1,60
 endon
 
 on Clock#Time=All,20:05 do 
-    if [CV_Floor_Temp_In#Temperature] < 35
+    if [CV_Floor_Pump_Temp_In#Temperature] < 35
         gpio,13,1
-        Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+        Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
     endif
 endon
 
 on Clock#Time=All,20:15 do
     gpio,13,0
-    Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 endon
 
 on Clock#Time=All,21:20 do
     gpio,13,0
-    Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 endon
 ```
 #### Rules Set 1 including annotation
@@ -150,7 +151,7 @@ on System#Boot do
     gpio,13,0 //set pin 13 low. This is the relay of the CV pump
     
 //store the value in variable1 to be able to be used later. 
-    Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature] 
+    Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature] 
      
     7don //turn the TM1637 on
     7db,1 //Display the number
@@ -163,35 +164,36 @@ on Rules#Timer=1 do // when timer 1 reaches the end of the cycle do
     If %systime% > 06:00:00        //after time …
         If %systime% < 20:00:00    //before time …
             Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,on    //push to MQTT
-            Let,1,[CV_Floor_Temp_In#Temperature]*100+[CV_Floor_Temp_Out#Temperature] //store the value in variable1 to be able to be used later. 
-            if [CV_Floor_Temp_In#Temperature] > 45 //this is the temperature too high
+            Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature] //store the value in variable1 to be able to be used later. 
+            if [CV_Floor_Pump_Temp_In#Temperature] > 45 //this is the temperature too high
                 gpio,13,0 //turn the relais off
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
             endif          
-            if [CV_Floor_Temp_In#Temperature] > 30   //when above .. then on
+            if [CV_Floor_Pump_Temp_In#Temperature] > 30   //when above .. then on
                 gpio,13,1
             endif
-            if [CV_Floor_Temp_In#Temperature] < 22   //when below .. then off
+            if [CV_Floor_Pump_Temp_In#Temperature] < 22   //when below .. then off
             gpio,13,0
             Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off   // publis to MQTT
             endif
         endif
+        Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,off
     endif
 
     7dn,[var#1]
  
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Temp_In,[CV_Floor_Temp_In#Temperature]
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Temp_Out,[CV_Floor_Temp_Out#Temperature]
-    Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_In,[CV_Floor_Pump_Temp_In#Temperature]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_Out,[CV_Floor_Pump_Temp_Out#Temperature]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 
     timerSet,1,60
 endon
 
 on Clock#Time=All,20:05 do //will run once a day at 20:05 to make sure that the pump will not get stuck
     //this timeslot needs to be outside of the timeslot of the automatic switching based on temperature
-    if [CV_Floor_Temp_In#Temperature] < 35   //when below .. then on. Only run when not too hot
+    if [CV_Floor_Pump_Temp_In#Temperature] < 35   //when below .. then on. Only run when not too hot
         gpio,13,1
-        Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+        Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
     endif
 endon
 
@@ -199,11 +201,11 @@ endon
 //Make sure that there is an off at a defined time outside the automatic switching window to make sure that the pump is off
 on Clock#Time=All,20:15 do //will run once a day at 20:15
     gpio,13,0
-    Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 endon
 
 on Clock#Time=All,20:20 do //will run once a day at 20:20 as backup if the previous command did not get set
     gpio,13,0
-    Publish,ESP05_CV_Floor_Pump/status/CV_Pump_Relay,[CV_Pump_Relay#State]
+    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 endon
 ```
