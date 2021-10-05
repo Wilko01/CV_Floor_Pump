@@ -61,6 +61,45 @@ See the instructions in 'Arduino projects and programming' (not listed here)
 ### Interface
 #### Home Assistant
 Home Assistant is connected via the MQTT broker.
+##### Adjust the configuratio.yaml in HA
+• In Home Assistant click in the left menu 'File editor'
+• Click at the left top the folder and select 'configuration.yaml'
+• Add the following text to be able to read the content of MQTT:
+```mqtt:
+  broker: 127.0.0.1
+  port: 1883                      
+  username: '<USERNAME>'
+  password: '<PASSWORD>'
+```
+Add the following text to add the two sensors to HA:
+```
+# EspEasy sensors running on NodeMCU in the meterkast
+sensor:
+  - platform: mqtt
+    state_topic: 'ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_In'
+    name: "CV_Floor_Pump_Temp_In"
+    icon: mdi:coolant-temperature
+  - platform: mqtt
+    state_topic: 'ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_Out'
+    name: "CV_Floor_Pump_Temp_Out"
+    icon: mdi:coolant-temperature
+```
+• The icon comes from Home Assistant supported entity icons
+ Restart HA to make the sensors visible as entities in HA
+
+##### Add identities to HA 
+• In Home Assistant click in the left menu 'Configuration'
+• Click 'Helpers'
+• Click '+' and select 'Toggle'
+• Add 'CV_Pump_Relay'
+• Repeat the steps for the 'CV_Floor_TemperatureTooHigh'
+
+##### Create NodeRed flow
+• Create the flow: Read the input of MQTT and forward the state to the Helpers that were created in the previous step. 
+
+##### Dashboard
+• Create the dashboard and add the temperature sensors and the helpers
+
 
 ### Testing
 Test command to turn the relay on: `http://192.168.201.64/control?cmd=gpio,13,1` 13 = D7
