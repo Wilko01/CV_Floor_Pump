@@ -1,4 +1,4 @@
-# CV-FloorPump
+# CV_Floor_Pump
 Control the CV floor pump based on the CV inlet temperature
 
 ## Description and operation instructions
