@@ -7,7 +7,7 @@ The CV floorpump will automatically turn on and off during a predefined timewind
  ## Technical description
 The ESP CV pomp module is the hart to turn the CV floor pump on and off. The temperatures of the in and outlet readings including the 'too high' will be send from the ESP to MQTT where NodeRed receives its information. In Home Assistant a virtual helper 'input_boolean.cv_floor_pump_relay' is used to indicate the state of the pump. It receives its information via NodeRed which reads MQTT and updates the value. The Module can operate without MQTT or Home Assistant.
 
-### Parts
+### Parts 
 1 x NodeMCU
 ![NodeMCU](Images/ESP8266_NodeMCU.jpg)
 
