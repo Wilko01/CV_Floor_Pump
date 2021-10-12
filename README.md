@@ -58,7 +58,7 @@ See the instructions in 'Arduino projects and programming' (not listed here)
 
 ![ESPEasy Devices ESPEasy_Display](Images/ESPEasy_Display.jpg)
 
-### Interface
+### Interface 
 #### Home Assistant
 Home Assistant is connected via the MQTT broker.
 ##### Adjust the configuratio.yaml in HA
