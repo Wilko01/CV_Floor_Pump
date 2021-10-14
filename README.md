@@ -79,10 +79,12 @@ sensor:
     state_topic: 'ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_In'
     name: "CV_Floor_Pump_Temp_In"
     icon: mdi:coolant-temperature
+    unit_of_measurement: "°C"
   - platform: mqtt
     state_topic: 'ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_Out'
     name: "CV_Floor_Pump_Temp_Out"
     icon: mdi:coolant-temperature
+    unit_of_measurement: "°C"
 ```
 • The icon comes from Home Assistant supported entity icons
  Restart HA to make the sensors visible as entities in HA
