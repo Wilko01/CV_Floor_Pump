@@ -20,17 +20,17 @@ The ESP CV pomp module is the hart to turn the CV floor pump on and off. The tem
 
 1 x TM1637
 
-<img src="Images/TM1637.jpg" alt="drawing" width="150"/>
+<img src="Images/TM1637.jpg" alt="drawing" width="200"/>
 
 
 1 x BC547B
 
-<img src="Images/BC547B.jpg" alt="drawing" width="150"/>
+<img src="Images/BC547B.jpg" alt="drawing" width="200"/>
 
 
 1 x Relay
 
-<img src="Images/Relay.jpg" alt="drawing" width="150"/>
+<img src="Images/Relay.jpg" alt="drawing" width="200"/>
 
 
 1 x Capacitor 1uF
