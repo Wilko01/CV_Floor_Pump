@@ -9,19 +9,29 @@ The ESP CV pomp module is the hart to turn the CV floor pump on and off. The tem
 
 ### Parts 
 1 x NodeMCU
-![NodeMCU](Images/ESP8266_NodeMCU.jpg)
+
+<img src="Images/ESP8266_NodeMCU.jpg" alt="drawing" width="500"/>
+
 
 2 x DHT11
-![DHT11](Images/DHT11.jpg)
+
+<img src="Images/DHT11.jpg" alt="drawing" width="150"/>
+
 
 1 x TM1637
-![TM1637](Images/TM1637.jpg)
+
+<img src="Images/TM1637.jpg" alt="drawing" width="150"/>
+
 
 1 x BC547B
-![BC547B](Images/BC547B.jpg)
+
+<img src="Images/BC547B.jpg" alt="drawing" width="150"/>
+
 
 1 x Relay
-![Relay](Images/Relay.jpg)
+
+<img src="Images/Relay.jpg" alt="drawing" width="150"/>
+
 
 1 x Capacitor 1uF
 1 x Green Led
