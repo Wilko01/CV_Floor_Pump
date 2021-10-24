@@ -56,6 +56,10 @@ See the instructions in 'Arduino projects and programming' (not listed here)
 
 
 ### ESPEasy Configuration
+Check the screenshots for the configuration.
+
+![ESPEasy Config](Images/ESPEasy_Config.jpg)
+
 ![ESPEasy Controller](Images/ESPEasy_Controller.jpg)
 
 ![ESPEasy Devices](Images/ESPEasy_Devices.jpg)
