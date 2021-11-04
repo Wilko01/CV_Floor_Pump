@@ -162,10 +162,10 @@ on Rules#Timer=1 do
                 gpio,13,0
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
             endif          
-            if [CV_Floor_Pump_Temp_In#Temperature] > 30
+            if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]
                 gpio,13,1
             endif
-            if [CV_Floor_Pump_Temp_In#Temperature] < 22
+            if [CV_Floor_Pump_Temp_In#Temperature] < 22 or [CV_Floor_Pump_Temp_In#Temperature] < [CV_Floor_Pump_Temp_Out#Temperature]
             gpio,13,0
             Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off
             endif
@@ -224,10 +224,10 @@ on Rules#Timer=1 do // when timer 1 reaches the end of the cycle do
                 gpio,13,0 //turn the relais off
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
             endif          
-            if [CV_Floor_Pump_Temp_In#Temperature] > 30   //when above .. then on
+            if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]   //when above .. then on
                 gpio,13,1
             endif
-            if [CV_Floor_Pump_Temp_In#Temperature] < 22   //when below .. then off
+            if [CV_Floor_Pump_Temp_In#Temperature] < 22 or [CV_Floor_Pump_Temp_In#Temperature] < [CV_Floor_Pump_Temp_Out#Temperature]   //when below .. then off
             gpio,13,0
             Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off   // publis to MQTT
             endif
