@@ -143,63 +143,59 @@ All annotation is stored in the next paragraph to let the #chars be below 2048. 
 ```
 on System#Boot do
     gpio,13,0
-    
     Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature] 
-     
-    7don 
+    7don
     7db,1
     7dn,[var#1]
-    
     timerSet,1,60
 endon
-
 on Rules#Timer=1 do
-    If %systime% > 06:00:00
-        If %systime% < 20:00:00
-            Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,on
-            Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature]
-            if [CV_Floor_Pump_Temp_In#Temperature] > 45
-                gpio,13,0
-                Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
-            endif
-            if [CV_Floor_Pump_Temp_In#Temperature] > 42
-                gpio,13,0
-            endif         
-            if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]
+ If %systime% > 06:00:00
+     If %systime% < 20:00:00
+         Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,on
+         Let,1,[CV_Floor_Pump_Temp_In#Temperature]*100+[CV_Floor_Pump_Temp_Out#Temperature]
+         if [CV_Floor_Pump_Temp_In#Temperature] > 45
+             gpio,13,0
+             Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
+         else
+           if [CV_Floor_Pump_Temp_In#Temperature] > 42
+               gpio,13,0
+           else
+             if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]
                 gpio,13,1
-            endif
-            if [CV_Floor_Pump_Temp_In#Temperature] < 22 or [CV_Floor_Pump_Temp_In#Temperature] < [CV_Floor_Pump_Temp_Out#Temperature]
-            gpio,13,0
-            Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off
-            endif
-        endif
-        Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,off
-    endif
+             endif
+             if [CV_Floor_Pump_Temp_In#Temperature] < 22 or [CV_Floor_Pump_Temp_In#Temperature] < [CV_Floor_Pump_Temp_Out#Temperature]
+               gpio,13,0
+               Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off
+             endif
+           endif
+         endif
+     endif
+     Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,off
+ endif
 
-    7dn,[var#1]
- 
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_In,[CV_Floor_Pump_Temp_In#Temperature]
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_Out,[CV_Floor_Pump_Temp_Out#Temperature]
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
-
-    timerSet,1,60
+7dn,[var#1]
+  Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_In,[CV_Floor_Pump_Temp_In#Temperature]
+   Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Temp_Out,[CV_Floor_Pump_Temp_Out#Temperature]
+   Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
+ timerSet,1,60
 endon
 
-on Clock#Time=All,20:05 do 
-    if [CV_Floor_Pump_Temp_In#Temperature] < 35
-        gpio,13,1
-        Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
-    endif
+on Clock#Time=All,20:05 do
+ if [CV_Floor_Pump_Temp_In#Temperature] < 35
+   gpio,13,1
+   Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
+ endif
 endon
 
 on Clock#Time=All,20:15 do
-    gpio,13,0
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
+  gpio,13,0
+  Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 endon
 
 on Clock#Time=All,21:20 do
-    gpio,13,0
-    Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
+  gpio,13,0
+  Publish,ESP05_CV_Floor_Pump/status/CV_Floor_Pump_Relay,[CV_Floor_Pump_Relay#State]
 endon
 ```
 #### Rules Set 1 including annotation
@@ -226,16 +222,18 @@ on Rules#Timer=1 do // when timer 1 reaches the end of the cycle do
             if [CV_Floor_Pump_Temp_In#Temperature] > 45 //this is the temperature too high
                 gpio,13,0 //turn the relais off
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
-            endif
-            if [CV_Floor_Pump_Temp_In#Temperature] > 42
+            else
+              if [CV_Floor_Pump_Temp_In#Temperature] > 42
+                  gpio,13,0
+              else        
+                if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]   //when above .. then on
+                  gpio,13,1
+                endif
+                if [CV_Floor_Pump_Temp_In#Temperature] < 22 or [CV_Floor_Pump_Temp_In#Temperature] < [CV_Floor_Pump_Temp_Out#Temperature]   //when below .. then off
                 gpio,13,0
-            endif        
-            if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]   //when above .. then on
-                gpio,13,1
-            endif
-            if [CV_Floor_Pump_Temp_In#Temperature] < 22 or [CV_Floor_Pump_Temp_In#Temperature] < [CV_Floor_Pump_Temp_Out#Temperature]   //when below .. then off
-            gpio,13,0
-            Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off   // publis to MQTT
+                Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,off   // publish to MQTT
+                endif
+              endif
             endif
         endif
         Publish,ESP05_CV_Floor_Pump/status/insideOfOperationalHours,off
