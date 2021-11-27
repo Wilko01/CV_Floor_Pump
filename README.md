@@ -161,7 +161,10 @@ on Rules#Timer=1 do
             if [CV_Floor_Pump_Temp_In#Temperature] > 45
                 gpio,13,0
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
-            endif          
+            endif
+            if [CV_Floor_Pump_Temp_In#Temperature] > 42
+                gpio,13,0
+            endif         
             if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]
                 gpio,13,1
             endif
@@ -223,7 +226,10 @@ on Rules#Timer=1 do // when timer 1 reaches the end of the cycle do
             if [CV_Floor_Pump_Temp_In#Temperature] > 45 //this is the temperature too high
                 gpio,13,0 //turn the relais off
                 Publish,ESP05_CV_Floor_Pump/status/TemperatureTooHigh,on
-            endif          
+            endif
+            if [CV_Floor_Pump_Temp_In#Temperature] > 42
+                gpio,13,0
+            endif        
             if [CV_Floor_Pump_Temp_In#Temperature] > 30 and [CV_Floor_Pump_Temp_In#Temperature] > [CV_Floor_Pump_Temp_Out#Temperature]   //when above .. then on
                 gpio,13,1
             endif
