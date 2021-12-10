@@ -71,7 +71,32 @@ Home Assistant is connected via ESPHOME.
 
 
 ### Testing
+#### Turn on the floor pump
+##### Pre condition
+- Within timewindow 06:00 - 20:00
+##### Test
+- Heat up till above 27'
+##### Expected result
+- The floorpump should run
 
+#### Turn off the floor pump
+##### Pre condition
+- Within timewindow 06:00 - 20:00
+##### Test
+- Heat up till above 27' to let the floorpump run
+- Cool down till below 25'C
+##### Expected result
+- The floorpump should stop
+
+#### Turn off the floor pump
+##### Pre condition
+- Within timewindow 06:00 - 20:00
+- The floorpump is running
+- The temp_in is above 28'C
+##### Test
+- Heat up till above 40'
+##### Expected result
+- The floorpump should stop
 
 ### Information
 - [ESPHOME](https://esphome.io)
