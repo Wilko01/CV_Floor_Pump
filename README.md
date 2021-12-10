@@ -114,4 +114,4 @@ Generic
 
 
 ### Code
-[Code in ESPHOME](Rules_Set_code_without_annotation.vbs)
+[Code in ESPHOME](code.vbs)
