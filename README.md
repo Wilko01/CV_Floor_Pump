@@ -1,10 +1,13 @@
 # CV_Floor_Pump
 Control the CV floor pump based on the CV inlet temperature
 
+## Release notes
+[Release notes](Relase_notes.MD)
+
 ## Description and operation instructions
 The CV floorpump will automatically turn on and off during a predefined timewindow by measuring the inlet temperature. The CV floor pump will be turned on above a defined inlet temperature and turned off below a defined temperature. A green led is on at the moment that the pump is on. When the temperature is above a defined temperature, the pump is turned off to make sure there is no damage to the floor when the temperature would be too high. Additional there will be a trigger towards Home Assistant where NodeRed receives the signal and sends an email and a virtual switch named ‘Floor temp too high’ is triggered. The functionality in Home Assistant is just for visualisation and emailing. The pump operates independently of Home assistant. The virtual switch will be reset once the temperature is below a certain value. The values are hard coded into the code of the ESP CV pump module (NodeMCU). The 7 segment LEDs at the module show the temperature. The 2 most left 7 segments LEDs are the inlet and the 2 most right 7 segments LEDs are the outlet temperature. At a defined time at the end of the day the pump will regularly run to ensure that it will not get stuck when it is not running for a long period. The code to run the pump regularly is hardcoded in the module.
 
- ## Technical description
+## Technical description
 The ESP CV pomp module is the hart to turn the CV floor pump on and off. The temperatures of the in and outlet readings including the 'too high' will be send from the ESP to Home Assistant. NodeRed monitors the too high and sends an email when this happens. The Module can operate without MQTT or Home Assistant, but will reboot once there is no connection to Home Assistant for more than 20 hours. The code is pushed over the air to the NodeMCU via ESPHOME.
 
 ### Parts 
