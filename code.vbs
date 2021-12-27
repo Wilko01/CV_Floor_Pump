@@ -1,6 +1,7 @@
-#CV_Floor_Pump
+#Runs on a NodeMCU
+
 esphome:
-  name: esp06
+  name: cv-floor-pump
   platform: ESP8266
   board: nodemcuv2
   on_boot:
@@ -19,20 +20,19 @@ logger:
 api:
 
 ota:
-  password: "16c2972e32843010a0ebe73ea5698eca"
+  password: "7b085fc0fa8e77f3a73a6801ac74836a"
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   reboot_timeout: 20hours # Reboots for the case that there is no wifi for more than 20 hours
-  
+
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Esp06 Fallback Hotspot"
-    password: "gSHMN961CTuf"
+    ssid: "Cv-Floor-Pump Fallback Hotspot"
+    password: "7oWPhG12698B"
 
 captive_portal:
-
 
 time:
   - platform: homeassistant
@@ -47,12 +47,16 @@ time:
             int t_now = parse_number<int>(id(homeassistant_time).now().strftime("%H%M")).value();
             float temp_in = static_cast<int>(id(CV_Floor_Pump_Temp_In).state);
             float temp_out = static_cast<int>(id(CV_Floor_Pump_Temp_Out).state);
-            if ((temp_in) >= 44)
+            if ((temp_in) >= 47)
               {
               id(Relay01).turn_off();
               id(CV_Floor_Pump_TemperatureTooHigh).turn_on();
               }
-            if (((temp_in) >= 40) || ((temp_out) >= 40))
+            if ((temp_in) >= 44)
+              {
+              id(Relay01).turn_off();
+            }
+            if (((temp_in) >= 39) || ((temp_out) >= 36))
               {
               id(Relay01).turn_off();
               }
@@ -60,11 +64,12 @@ time:
               {
               if ((t_now >= 600) && (t_now <= 2000))
                 {
-              	if (((temp_in) >= 27) && ((temp_in) > (temp_out)))
+              	if (((temp_in) >= 25) && ((temp_in) > (temp_out)))
             		  {
             			id(Relay01).turn_on();
+            			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
             			}
-            		if (((temp_in) <= 25) || ((temp_in) < (temp_out)))
+            		if (((temp_in) <= 22) || ((temp_in) < (temp_out)))
             		  {
             			id(Relay01).turn_off();
             			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
@@ -73,10 +78,12 @@ time:
               if ((t_now >= 2030) && (t_now <= 2040))
                 {
                 id(Relay01).turn_on();
+                id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
               	}
               if ((t_now >= 2042) && (t_now <= 2100))
                 {
                 id(Relay01).turn_off();
+                id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
                 }
               }
 
