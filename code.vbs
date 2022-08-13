@@ -64,7 +64,7 @@ time:
               {
               if ((t_now >= 600) && (t_now <= 2000))
                 {
-              	if (((temp_in) >= 25) && ((temp_in) > (temp_out)))
+              	if (((temp_in) >= 27) && ((temp_in) > (temp_out)))
             		  {
             			id(Relay01).turn_on();
             			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
