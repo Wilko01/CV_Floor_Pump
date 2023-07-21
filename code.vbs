@@ -34,59 +34,6 @@ wifi:
 
 captive_portal:
 
-time:
-  - platform: homeassistant
-    id: homeassistant_time
-
-    on_time:
-      - seconds: /30  # needs to be set, otherwise every second this is triggered!
-        minutes: '*'  # Trigger every minute
-        then:
-          lambda: !lambda |-
-            auto time = id(homeassistant_time).now();
-            int t_now = parse_number<int>(id(homeassistant_time).now().strftime("%H%M")).value();
-            float temp_in = static_cast<int>(id(CV_Floor_Pump_Temp_In).state);
-            float temp_out = static_cast<int>(id(CV_Floor_Pump_Temp_Out).state);
-            if ((temp_in) >= 47)
-              {
-              id(Relay01).turn_off();
-              id(CV_Floor_Pump_TemperatureTooHigh).turn_on();
-              }
-            if ((temp_in) >= 44)
-              {
-              id(Relay01).turn_off();
-            }
-            if (((temp_in) >= 39) || ((temp_out) >= 36))
-              {
-              id(Relay01).turn_off();
-              }
-            else
-              {
-              if ((t_now >= 600) && (t_now <= 2000))
-                {
-              	if (((temp_in) >= 27) && ((temp_in) > (temp_out)))
-            		  {
-            			id(Relay01).turn_on();
-            			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
-            			}
-            		if (((temp_in) <= 22) || ((temp_in) < (temp_out)))
-            		  {
-            			id(Relay01).turn_off();
-            			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
-            			}
-            		 }
-              if ((t_now >= 2030) && (t_now <= 2040))
-                {
-                id(Relay01).turn_on();
-                id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
-              	}
-              if ((t_now >= 2042) && (t_now <= 2100))
-                {
-                id(Relay01).turn_off();
-                id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
-                }
-              }
-
 sensor:
 # Define the temperature sensor. In this case the humidity sensor is not used
 # CV_Floor_Pump_Temp_In
@@ -137,6 +84,73 @@ display:
       if (id(CV_Floor_Pump_Temp_Out).has_state()) {
         it.printf(2, "%.0f", id(CV_Floor_Pump_Temp_Out).state);
       }
-
 #end code
+
+#Get value from Helper in Home Assistant
+#https://esphome.io/components/binary_sensor/homeassistant.html
+binary_sensor:
+  - platform: homeassistant
+    id: override_from_home_assistant_helper
+    entity_id: input_boolean.CV_Floor_Pump_override
+
+
+#logic:
+
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+    on_time:
+      - seconds: /120  # needs to be set, otherwise every second this is triggered!
+        minutes: '*'  # Trigger every 2 minutes
+        then:
+          lambda: !lambda |-
+            auto time = id(homeassistant_time).now();
+            int t_now = parse_number<int>(id(homeassistant_time).now().strftime("%H%M")).value();
+            float temp_in = static_cast<int>(id(CV_Floor_Pump_Temp_In).state);
+            float temp_out = static_cast<int>(id(CV_Floor_Pump_Temp_Out).state);
+            if ((temp_in) >= 48)
+              {
+              id(Relay01).turn_off();
+              id(CV_Floor_Pump_TemperatureTooHigh).turn_on();
+              }
+            if ((temp_in) >= 44)
+              {
+              id(Relay01).turn_off();
+            }
+            if (((temp_in) >= 43) || ((temp_out) >= 39))
+              {
+              id(Relay01).turn_off();
+              }
+            if (id(override_from_home_assistant_helper).state)
+              {
+                //Do nothing as the override is active which is set in Home Assistant
+              }
+            else
+              {
+              if ((t_now >= 600) && (t_now <= 2140))
+                {
+              	if (((temp_in) >= 25) && ((temp_in) > (temp_out)))
+            		  {
+            			id(Relay01).turn_on();
+            			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
+            			}
+            		if (((temp_in) <= 22) || ((temp_in) < (temp_out)))
+            		  {
+            			id(Relay01).turn_off();
+            			id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
+            			}
+            		 }
+              if ((t_now >= 2141) && (t_now <= 2150))
+                {
+                id(Relay01).turn_on();
+                id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
+              	}
+              if ((t_now >= 2151) && (t_now <= 2200))
+                {
+                id(Relay01).turn_off();
+                id(CV_Floor_Pump_TemperatureTooHigh).turn_off();
+                }
+              }
 
