@@ -34,6 +34,12 @@ wifi:
 
 captive_portal:
 
+# Add virtual switch to remotely restart the ESP via HA
+# https://esphome.io/components/switch/restart
+button:
+  - platform: restart
+    name: "ESP_cv-floor-pump restart"
+
 sensor:
 # Define the temperature sensor. In this case the humidity sensor is not used
 # CV_Floor_Pump_Temp_In
